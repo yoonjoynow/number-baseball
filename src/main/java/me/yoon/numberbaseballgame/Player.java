@@ -13,4 +13,8 @@ public abstract class Player {
     protected abstract List<Integer> pickAttackNumbers();
     protected abstract void defend();
 
+    public List<Integer> getHiddenNumbers() {
+        return hiddenNumbers;
+    }
+
 }

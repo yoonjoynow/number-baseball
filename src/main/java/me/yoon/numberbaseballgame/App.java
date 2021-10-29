@@ -1,11 +1,13 @@
 package me.yoon.numberbaseballgame;
 
-import java.util.List;
-
 public class App {
 
     public static void main(String[] args) {
+
+        User user = new User();
+        Computer computer = new Computer();
         Referee referee = new Referee();
-//        referee.call()
+        NumberBaseballGame game = new NumberBaseballGame(user, computer, referee);
+        game.startGame();
     }
 }

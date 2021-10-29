@@ -36,21 +36,42 @@ public class Computer extends Player {
 
     }
 
-
-
     @Override
     protected void defend() {
 
     }
 
-    private void excludeOutNumbers(int[] outNumbers) {
+    public void excludeOutNumbers(List<Integer> outNumbers) {
         for (int outNumber : outNumbers) {
+            // 아웃 넘버들은 다음 추론에서 제외
             this.expectedNumbers.remove((Object) outNumber);
         }
     }
 
     @Override
     protected List<Integer> pickAttackNumbers() {
-        return null;
+        /**
+         *    1. 우선 랜덤 숫자를 0 ~ 9 까지 획득
+         *    2. 이미 획득한 숫자이면 제외
+         *    3. expectedNumbers에 없는 숫자면 제외
+         *    4. attackNumbers의 size가 4일 때까지 반복
+         *    5. attackNumbers 리턴
+         */
+
+        List<Integer> attackNumbers = new ArrayList<>(4);
+        while (attackNumbers.size() < this.MAX_SIZE) {
+            int randomNumber = createRandomNumber();
+            pickNumber(attackNumbers, randomNumber);
+        }
+
+        return attackNumbers;
     }
+
+    private void pickNumber(List<Integer> attackNumbers, int randomNumber) {
+        if (! expectedNumbers.contains(randomNumber) &&
+            ! attackNumbers.contains(randomNumber)) {
+            attackNumbers.add(randomNumber);
+        }
+    }
+
 }
