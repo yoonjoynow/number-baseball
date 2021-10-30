@@ -9,11 +9,14 @@ public class App {
         Computer computer = new Computer();
         Referee referee = new Referee();
         NumberBaseballGame game = createGame(user, computer, referee);
+
         game.startGame();
     }
 
     public static NumberBaseballGame createGame(User user, Computer computer, Referee referee) {
-        return NumberBaseballGame.getInstance(user, computer, referee);
+        NumberBaseballGame baseballGame = NumberBaseballGame.getInstance();
+        baseballGame.setMembers(user, computer, referee);
+        return baseballGame;
     }
 
 }

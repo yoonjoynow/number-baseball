@@ -20,15 +20,14 @@ public class Referee {
     }
 
     public void callWinner(Player player) {
-        boolean isComputer = checkComputer(player);
-        String winner = "";
-        if (isComputer) {
-            winner = "컴퓨터";
+        StringBuilder winnerName;
+        if (isComputer(player)) {
+            winnerName = new StringBuilder("컴퓨터");
         } else {
-            winner = "당신";
+            winnerName = new StringBuilder("당신");
         }
 
-        System.out.println(winner + "의 승리!");
+        System.out.println(winnerName + "의 승리!");
         System.exit(0);
     }
 
@@ -38,51 +37,41 @@ public class Referee {
         List<Integer> hiddenNumbers = defender.getHiddenNumbers();
 
         int[] result = this.judgement.counting(attackNumbers, hiddenNumbers);
-        boolean isGameOver = hasWon(result);
         // 게임 종료 로직
-        if (isGameOver) {
+        if (isGameOver(result)) {
             callWinner(attacker);
         }
 
-        boolean hasOutCounts = checkOutCount(result);
-        if (hasOutCounts) {
+        if (hasOutCounts(result)) {
             excludeOutNumbers(defender, attackNumbers);
         }
 
         return result;
     }
 
-    private boolean hasWon(int[] result) {
+    private boolean isGameOver(int[] result) {
         // 승리 조건 : 4 스트라이크
-        if (result[0] == 4) {
-            return true;
-        }
-
-        return false;
+        return result[0] == 4;
     }
 
-    private boolean checkOutCount(int[] result) {
-        if (result[0] == 1 && result[1] == 1) {
-            return true;
-        }
-
-        return false;
+    private boolean hasOutCounts(int[] result) {
+        return (result[0] + result[1]) == 0;
     }
 
     // TODO : 이 로직은 Computer로 가야함
     private void excludeOutNumbers(Player defender, List<Integer> attackNumbers) {
-        boolean isComputer = checkComputer(defender);
-        if (isComputer) {
+        if (isComputer(defender)) {
             // 아웃된 숫자를 컴퓨터가 추리에 사용하지 않게 하는 로직
             Computer computer = (Computer) defender;
             computer.excludeOutNumbers(attackNumbers);
+            System.out.println("컴퓨터가 아웃을 획득했습니다 ㅠㅠ");
         } else {
             // 사용자가 아웃을 획득했으면 뭘 해주어야 하나?
             System.out.println("아웃 카운트 획득!!!!!");
         }
     }
 
-    private boolean checkComputer(Player target) {
+    private boolean isComputer(Player target) {
         return target instanceof Computer;
     }
 

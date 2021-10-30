@@ -8,29 +8,27 @@ public class NumberBaseballGame {
     private Computer computer;
     private Referee referee;
 
-    private NumberBaseballGame(User user, Computer computer, Referee referee) {
-        this.user = user;
-        this.computer = computer;
-        this.referee = referee;
+    private NumberBaseballGame() {
     }
 
-    // TODO : getInstance 정리
-    public static NumberBaseballGame getInstance(User user, Computer computer, Referee referee) {
+    public static NumberBaseballGame getInstance() {
         if (numberBaseballGame == null) {
-            numberBaseballGame = new NumberBaseballGame(user, computer, referee);
+            numberBaseballGame = new NumberBaseballGame();
         }
 
         return numberBaseballGame;
     }
 
-    public static NumberBaseballGame getInstance() {
-        return numberBaseballGame;
+    public void setMembers(User user, Computer computer, Referee referee) {
+        this.user = user;
+        this.computer = computer;
+        this.referee = referee;
     }
 
     // 숫자 야구 게임 시작
     public void startGame() {
-        Player firstAttacker = null;
-        Player laterAttacker = null;
+        Player firstAttacker;
+        Player laterAttacker;
 
         boolean isHeads = this.referee.coinToss();
         if (isHeads) {
@@ -56,13 +54,8 @@ public class NumberBaseballGame {
     }
 
     private void startInnings(Player firstAttacker, Player laterAttacker) {
-        for (int inning = 1; inning <= 9; inning++) {
-            // TODO : while 문으로 대체
-            if (inning > 9) {
-                System.out.println("무승부!");
-                System.exit(0);
-            }
-
+        int inning = 1;
+        while (inning < 10) {
             System.out.println("======================");
             System.out.println(inning + "회 초 시작");
             int[] topResult = startTopRound(firstAttacker, laterAttacker);// 이닝 초
@@ -72,7 +65,10 @@ public class NumberBaseballGame {
             System.out.println(inning + "회 말 시작");
             int[] bottomResult = startBottomRound(laterAttacker, firstAttacker);// 이닝 말
             System.out.println(bottomResult[0] + "스트라이크 " + bottomResult[1] + "볼");
+            inning++;
         }
+
+        System.out.println("무승부!");
     }
 
     private int[] startTopRound(Player attacker, Player defender) {

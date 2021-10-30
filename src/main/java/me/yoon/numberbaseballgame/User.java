@@ -13,14 +13,14 @@ public class User extends Player {
 
         while (this.hiddenNumbers.size() != 4) {
             int randomNumber = scanner.nextInt();
-            if (isContained(this.hiddenNumbers, randomNumber)) {
+            if (hasElement(this.hiddenNumbers, randomNumber)) {
                 continue;
             }
 
             this.hiddenNumbers.add(randomNumber);
         }
 
-        System.out.println("히든넘버 : " + this.hiddenNumbers);
+        System.out.println("나의 히든넘버 : " + this.hiddenNumbers);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class User extends Player {
         Scanner scanner = new Scanner(System.in);
         while (attackNumbers.size() < this.MAX_SIZE) {
             int newNumber = scanner.nextInt();
-            if (isContained(attackNumbers, newNumber)) {
+            if (hasElement(attackNumbers, newNumber)) {
                 continue;
             }
 
@@ -49,7 +49,7 @@ public class User extends Player {
         return attackNumbers;
     }
 
-    private boolean isContained(List<Integer> list, int integer) {
+    private boolean hasElement(List<Integer> list, int integer) {
         if (list.contains(integer)) {
             System.out.println("이미 고른 숫자입니다.");
             return true;

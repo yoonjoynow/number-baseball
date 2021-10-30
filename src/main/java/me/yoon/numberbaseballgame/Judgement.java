@@ -4,9 +4,6 @@ import java.util.List;
 
 public class Judgement {
 
-    private int strikeCount;
-    private int ballCount;
-
     /**
      * 공격숫자 : 공격자가 수비자에게 제시한 숫자
      * 히든넘버 : 각 플레이어가 서로 맞춰야 하는 상대방의 숫자
@@ -18,42 +15,45 @@ public class Judgement {
      */
     public int[] counting(List<Integer> attackNumbers, List<Integer> hiddenNumbers) {
         int[] result = new int[2];
-        countStrike(attackNumbers, hiddenNumbers);
-        countBall(attackNumbers, hiddenNumbers);
-        return getResult(result);
+
+        int strikeCount = countStrike(attackNumbers, hiddenNumbers);
+        int ballCount = countBall(attackNumbers, hiddenNumbers);
+        return getResult(result, strikeCount, ballCount);
     }
 
-    private int[] getResult(int[] result) {
+    private int[] getResult(int[] result, int strikeCount, int ballCount) {
         result[0] = strikeCount;
         result[1] = ballCount - strikeCount;
         return result;
     }
 
-    private void countStrike(List<Integer> attackNumbers, List<Integer> hiddenNumbers) {
+    private int countStrike(List<Integer> attackNumbers, List<Integer> hiddenNumbers) {
+        int strikeCount = 0;
         for (int i = 0; i < hiddenNumbers.size(); i++) {
+            int attackerNumber = attackNumbers.get(i);
             int defenderNumber = hiddenNumbers.get(i);
-            int attackerNumber = attackNumbers.get(i);
-            isMatch(attackerNumber, defenderNumber);
+            if (attackerNumber == defenderNumber) {
+                strikeCount++;
+            }
         }
+
+        return strikeCount;
     }
 
-    private void isMatch(int a, int b) {
-        if (a == b) {
-            this.strikeCount++;
-        }
-    }
-
-    private void countBall(List<Integer> attackNumbers, List<Integer> hiddenNumbers) {
+    private int countBall(List<Integer> attackNumbers, List<Integer> hiddenNumbers) {
+        int ballCount = 0;
         for (int i = 0; i < hiddenNumbers.size(); i++) {
             int attackerNumber = attackNumbers.get(i);
-            hasElement(attackerNumber, hiddenNumbers);
+            if (hasElement(attackerNumber, hiddenNumbers)) {
+                ballCount++;
+            }
         }
+
+        return ballCount;
     }
 
-    private void hasElement(int attackerNumber, List<Integer> hiddenNumbers) {
-        if (hiddenNumbers.contains(attackerNumber)) {
-            ballCount++;
-        }
+    private boolean hasElement(int attackerNumber, List<Integer> hiddenNumbers) {
+        return hiddenNumbers.contains(attackerNumber);
     }
 
 }

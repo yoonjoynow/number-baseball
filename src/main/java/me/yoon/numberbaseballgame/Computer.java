@@ -45,6 +45,7 @@ public class Computer extends Player {
             // 아웃 넘버들은 다음 추론에서 제외
             this.expectedNumbers.remove((Object) outNumber);
         }
+        System.out.println("추론 목록 : " + expectedNumbers.toString());
     }
 
     @Override
