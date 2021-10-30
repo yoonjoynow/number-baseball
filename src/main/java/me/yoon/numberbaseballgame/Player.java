@@ -9,9 +9,8 @@ public abstract class Player {
     protected List<Integer> hiddenNumbers = new ArrayList<>(MAX_SIZE);
 
     protected abstract void pickHiddenNumbers();
-    protected abstract void attack();
+    protected abstract List<Integer> attack();
     protected abstract List<Integer> pickAttackNumbers();
-    protected abstract void defend();
 
     public List<Integer> getHiddenNumbers() {
         return hiddenNumbers;

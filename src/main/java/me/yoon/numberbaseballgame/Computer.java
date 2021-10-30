@@ -25,6 +25,8 @@ public class Computer extends Player {
 
             this.hiddenNumbers.add(newNumber);
         }
+
+        System.out.println("컴퓨터 히든 넘버 : " + getHiddenNumbers().toString());
     }
 
     private int createRandomNumber() {
@@ -32,13 +34,10 @@ public class Computer extends Player {
     }
 
     @Override
-    protected void attack() {
-
-    }
-
-    @Override
-    protected void defend() {
-
+    protected List<Integer> attack() {
+        List<Integer> attackNumbers = pickAttackNumbers();
+        System.out.println("컴퓨터의 공격 숫자 : " + attackNumbers.toString());
+        return attackNumbers;
     }
 
     public void excludeOutNumbers(List<Integer> outNumbers) {
@@ -68,7 +67,7 @@ public class Computer extends Player {
     }
 
     private void pickNumber(List<Integer> attackNumbers, int randomNumber) {
-        if (! expectedNumbers.contains(randomNumber) &&
+        if (expectedNumbers.contains(randomNumber) &&
             ! attackNumbers.contains(randomNumber)) {
             attackNumbers.add(randomNumber);
         }

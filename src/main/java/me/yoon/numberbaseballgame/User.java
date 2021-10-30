@@ -24,11 +24,15 @@ public class User extends Player {
     }
 
     @Override
-    public void attack() {
+    public List<Integer> attack() {
         System.out.println("공격 숫자 네 자리를 정하세요");
         List<Integer> attackNumbers = pickAttackNumbers();
+        System.out.println("공격 숫자 : " + attackNumbers.toString());
+        return attackNumbers;
     }
 
+
+    // TODO : 구현 감추기
     @Override
     protected List<Integer> pickAttackNumbers() {
         List<Integer> attackNumbers = new ArrayList<>(this.MAX_SIZE);
@@ -52,16 +56,6 @@ public class User extends Player {
         }
 
         return false;
-    }
-
-    @Override
-    protected void defend() {
-
-    }
-
-    public static void main(String[] args) {
-        User user = new User();
-        user.pickHiddenNumbers();
     }
 
 }

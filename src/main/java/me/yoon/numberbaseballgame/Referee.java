@@ -10,31 +10,46 @@ public class Referee {
     // 나머지가 0이면 앞면, 사용자 선공
     // 나멎가 1이면 뒷면, 컴퓨터 선공
     public boolean coinToss() {
+        System.out.println("동전 던지기 팅~!");
         int randomNumber = new Random().nextInt(9);
         if (randomNumber % 2 == 0) {
-            System.out.println("앞면 입니다. \n 사용자 선공입니다.");
             return true;
         }
 
-        System.out.println("뒷면입니다. \n 컴퓨터 선공입니다.");
         return false;
     }
 
-    public void judge(Player attacker, Player defender) {
-        List<Integer> attackNumbers = attacker.pickAttackNumbers();
+    public void callWinner(Player player) {
+        boolean isComputer = checkComputer(player);
+        String winner = "";
+        if (isComputer) {
+            winner = "컴퓨터";
+        } else {
+            winner = "당신";
+        }
+
+        System.out.println(winner + "의 승리!");
+        System.exit(0);
+    }
+
+    public int[] judge(Player attacker, Player defender) {
+        System.out.println("판정 시작");
+        List<Integer> attackNumbers = attacker.attack();
         List<Integer> hiddenNumbers = defender.getHiddenNumbers();
 
         int[] result = this.judgement.counting(attackNumbers, hiddenNumbers);
         boolean isGameOver = hasWon(result);
+        // 게임 종료 로직
         if (isGameOver) {
-            // 게임 종료 로직
-
+            callWinner(attacker);
         }
 
         boolean hasOutCounts = checkOutCount(result);
         if (hasOutCounts) {
             excludeOutNumbers(defender, attackNumbers);
         }
+
+        return result;
     }
 
     private boolean hasWon(int[] result) {
@@ -54,6 +69,7 @@ public class Referee {
         return false;
     }
 
+    // TODO : 이 로직은 Computer로 가야함
     private void excludeOutNumbers(Player defender, List<Integer> attackNumbers) {
         boolean isComputer = checkComputer(defender);
         if (isComputer) {
