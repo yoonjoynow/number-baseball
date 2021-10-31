@@ -1,5 +1,7 @@
 package me.yoon.numberbaseballgame;
 
+import javax.swing.*;
+
 public class NumberBaseballGame {
 
     private static NumberBaseballGame numberBaseballGame;
@@ -31,15 +33,19 @@ public class NumberBaseballGame {
         Player laterAttacker;
 
         boolean isHeads = this.referee.coinToss();
+        String message;
         if (isHeads) {
-            System.out.println("(결과 : 앞면) 당신이 선공, 컴퓨터가 후공입니다.");
             firstAttacker = this.user;
             laterAttacker = this.computer;
+            message = "(결과 : 앞면) 당신이 선공, 컴퓨터가 후공입니다.";
         } else {
-            System.out.println("(결과 : 뒷면) 당신이 후공, 컴퓨터가 선공입니다.");
             firstAttacker =  this.computer;
             laterAttacker = this.user;
+            message = "(결과 : 뒷면) 당신이 후공, 컴퓨터가 선공입니다.";
         }
+
+        // 코인 토스 결과 팝업
+        JOptionPane.showMessageDialog(null, message);
 
         // 각자 히든 넘버 세팅
         setHiddenNumbers(firstAttacker, laterAttacker);
@@ -68,7 +74,8 @@ public class NumberBaseballGame {
             inning++;
         }
 
-        System.out.println("무승부!");
+        // 9회까지 승부가 안나면 무승부
+        JOptionPane.showMessageDialog(null, "무승부!");
     }
 
     private int[] startTopRound(Player attacker, Player defender) {

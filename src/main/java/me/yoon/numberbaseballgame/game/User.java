@@ -1,26 +1,40 @@
 package me.yoon.numberbaseballgame;
 
+import javafx.event.ActionEvent;
+import me.yoon.view.Hello;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class User extends Player {
 
+    private int pickNumber(ActionEvent event) {
+        String text = ((JButton) event.getSource()).getText();
+        System.out.println("text = " + text);
+        return Integer.valueOf(text);
+    }
+
     @Override
     public void pickHiddenNumbers() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("네 자리의 히든넘버를 선택해주세요");
+//        Scanner scanner = new Scanner(System.in);
+        JOptionPane.showMessageDialog(null, "네 자리의 히든넘버를 선택해주세요");
 
         while (this.hiddenNumbers.size() != 4) {
-            int randomNumber = scanner.nextInt();
-            if (hasElement(this.hiddenNumbers, randomNumber)) {
+//            int randomNumber = scanner.nextInt();
+
+            int number = 0;
+
+            if (hasElement(this.hiddenNumbers, number)) {
                 continue;
             }
 
-            this.hiddenNumbers.add(randomNumber);
+            this.hiddenNumbers.add(number);
         }
 
-        System.out.println("나의 히든넘버 : " + this.hiddenNumbers);
+//        System.out.println("나의 히든넘버 : " + this.hiddenNumbers);
+        JOptionPane.showMessageDialog(null, "나의 히든넘버 : " + this.hiddenNumbers);
     }
 
     @Override
@@ -31,8 +45,6 @@ public class User extends Player {
         return attackNumbers;
     }
 
-
-    // TODO : 구현 감추기
     @Override
     protected List<Integer> pickAttackNumbers() {
         List<Integer> attackNumbers = new ArrayList<>(this.MAX_SIZE);

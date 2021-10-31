@@ -1,5 +1,6 @@
 package me.yoon.numberbaseballgame;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +11,7 @@ public class Referee {
     // 나머지가 0이면 앞면, 사용자 선공
     // 나멎가 1이면 뒷면, 컴퓨터 선공
     public boolean coinToss() {
-        System.out.println("동전 던지기 팅~!");
+        JOptionPane.showMessageDialog(null, "코인 토스 시작!");
         int randomNumber = new Random().nextInt(9);
         if (randomNumber % 2 == 0) {
             return true;
@@ -20,14 +21,13 @@ public class Referee {
     }
 
     public void callWinner(Player player) {
-        StringBuilder winnerName;
+        StringBuilder message;
         if (isComputer(player)) {
-            winnerName = new StringBuilder("컴퓨터");
+            message = new StringBuilder("당신의 패배 ㅠㅠ");
         } else {
-            winnerName = new StringBuilder("당신");
+            message = new StringBuilder("당신의 승리!!!");
         }
-
-        System.out.println(winnerName + "의 승리!");
+        JOptionPane.showMessageDialog(null, message);
         System.exit(0);
     }
 
