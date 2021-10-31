@@ -1,4 +1,4 @@
-package me.yoon.numberbaseballgame;
+package me.yoon.numberbaseballgame.game;
 
 import javax.swing.*;
 import java.util.List;
@@ -13,26 +13,22 @@ public class Referee {
     public boolean coinToss() {
         JOptionPane.showMessageDialog(null, "코인 토스 시작!");
         int randomNumber = new Random().nextInt(9);
-        if (randomNumber % 2 == 0) {
-            return true;
-        }
-
-        return false;
+        return randomNumber % 2 == 0;
     }
 
     public void callWinner(Player player) {
-        StringBuilder message;
+        String message;
         if (isComputer(player)) {
-            message = new StringBuilder("당신의 패배 ㅠㅠ");
+            message = "당신의 패배 ㅠㅠ";
         } else {
-            message = new StringBuilder("당신의 승리!!!");
+            message = "당신의 승리!!!";
         }
+
         JOptionPane.showMessageDialog(null, message);
         System.exit(0);
     }
 
     public int[] judge(Player attacker, Player defender) {
-        System.out.println("판정 시작");
         List<Integer> attackNumbers = attacker.attack();
         List<Integer> hiddenNumbers = defender.getHiddenNumbers();
 
@@ -58,17 +54,19 @@ public class Referee {
         return (result[0] + result[1]) == 0;
     }
 
-    // TODO : 이 로직은 Computer로 가야함
     private void excludeOutNumbers(Player defender, List<Integer> attackNumbers) {
+        String message;
         if (isComputer(defender)) {
             // 아웃된 숫자를 컴퓨터가 추리에 사용하지 않게 하는 로직
             Computer computer = (Computer) defender;
             computer.excludeOutNumbers(attackNumbers);
-            System.out.println("컴퓨터가 아웃을 획득했습니다 ㅠㅠ");
+            message = "컴퓨터가 아웃을 획득했습니다 ㅠㅠ";
         } else {
             // 사용자가 아웃을 획득했으면 뭘 해주어야 하나?
-            System.out.println("아웃 카운트 획득!!!!!");
+            message = "4 아웃!!! 게임이 이제 유리합니다!!";
         }
+
+        JOptionPane.showMessageDialog(null, message);
     }
 
     private boolean isComputer(Player target) {

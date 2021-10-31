@@ -1,73 +1,83 @@
-package me.yoon.numberbaseballgame;
+package me.yoon.numberbaseballgame.game;
 
-import javafx.event.ActionEvent;
-import me.yoon.view.Hello;
+import me.yoon.numberbaseballgame.listener.GameButtonListener;
+import me.yoon.numberbaseballgame.listener.NumberButtonListener;
+import me.yoon.numberbaseballgame.view.GameFrame;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class User extends Player {
 
-    private int pickNumber(ActionEvent event) {
-        String text = ((JButton) event.getSource()).getText();
-        System.out.println("text = " + text);
-        return Integer.valueOf(text);
-    }
+    NumberButtonListener numberButtonListener = NumberButtonListener.getListener();
+    List<Integer> numberList = NumberButtonListener.getListener().getNumberList();
 
     @Override
     public void pickHiddenNumbers() {
-//        Scanner scanner = new Scanner(System.in);
         JOptionPane.showMessageDialog(null, "네 자리의 히든넘버를 선택해주세요");
+        getPressedNumbers(this.numberButtonListener);
+        addNumbers(this.numberList, this.hiddenNumbers);
+        JOptionPane.showMessageDialog(null, "나의 히든넘버 : " + this.hiddenNumbers);
+        changeHiddenButtonText();
+    }
 
-        while (this.hiddenNumbers.size() != 4) {
-//            int randomNumber = scanner.nextInt();
-
-            int number = 0;
-
-            if (hasElement(this.hiddenNumbers, number)) {
-                continue;
+    private List<Integer> getPressedNumbers(GameButtonListener listener) {
+        this.numberList.clear();
+        List<Integer> numberList = listener.getNumberList();
+        int size = 0;
+        while (size < 5) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            this.hiddenNumbers.add(number);
+            size = numberList.size();
+            if (size == 4) {
+                break;
+            }
         }
 
-//        System.out.println("나의 히든넘버 : " + this.hiddenNumbers);
-        JOptionPane.showMessageDialog(null, "나의 히든넘버 : " + this.hiddenNumbers);
+        return numberList;
+    }
+
+    private void addNumbers(List<Integer> listA, List<Integer> listB) {
+        listB.addAll(listA);
     }
 
     @Override
     public List<Integer> attack() {
-        System.out.println("공격 숫자 네 자리를 정하세요");
+        JOptionPane.showMessageDialog(null, "공격 숫자 네 자리를 정하세요");
         List<Integer> attackNumbers = pickAttackNumbers();
-        System.out.println("공격 숫자 : " + attackNumbers.toString());
+        JOptionPane.showMessageDialog(null, "나의 공격 숫자 : " + attackNumbers.toString());
+        changeAttackButtonText();
         return attackNumbers;
     }
 
     @Override
     protected List<Integer> pickAttackNumbers() {
-        List<Integer> attackNumbers = new ArrayList<>(this.MAX_SIZE);
-        Scanner scanner = new Scanner(System.in);
-        while (attackNumbers.size() < this.MAX_SIZE) {
-            int newNumber = scanner.nextInt();
-            if (hasElement(attackNumbers, newNumber)) {
-                continue;
-            }
-
-            attackNumbers.add(newNumber);
-        }
-
-        return attackNumbers;
+        return getPressedNumbers(numberButtonListener);
     }
 
-    private boolean hasElement(List<Integer> list, int integer) {
-        if (list.contains(integer)) {
-            System.out.println("이미 고른 숫자입니다.");
-            return true;
+    private void changeHiddenButtonText() {
+        List<JButton> hiddenNumberButtons = GameFrame.getInstance().getHiddenNumberButtons();
+        for (int i = 0; i < hiddenNumberButtons.size(); i++) {
+            JButton button = hiddenNumberButtons.get(i);
+            int number = this.hiddenNumbers.get(i);
+            button.setText(String.valueOf(number));
+            button.setBackground(Color.YELLOW);
         }
+    }
 
-        return false;
+    private void changeAttackButtonText() {
+        List<JButton> attackNumberButtons = GameFrame.getInstance().getAttackNumberButtons();
+        for (int i = 0; i < attackNumberButtons.size(); i++) {
+            JButton button = attackNumberButtons.get(i);
+            int number = this.numberList.get(i);
+            button.setText(String.valueOf(number));
+            button.setBackground(Color.CYAN);
+        }
     }
 
 }

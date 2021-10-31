@@ -1,7 +1,8 @@
-package me.yoon.numberbaseballgame;
+package me.yoon.numberbaseballgame.game;
 
-import javafx.event.ActionEvent;
+import me.yoon.numberbaseballgame.view.GameFrame;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,16 @@ public abstract class Player {
 
     public List<Integer> getHiddenNumbers() {
         return hiddenNumbers;
+    }
+
+    protected void printMessageAtTopBoard(String message) {
+        JTextArea topBoard = GameFrame.getInstance().getTopBoard();
+        topBoard.setText(message);
+    }
+
+    protected void printMessageAtBottomBoard(String message) {
+        JTextArea bottomBoard = GameFrame.getInstance().getBottomBoard();
+        bottomBoard.setText(message);
     }
 
 }

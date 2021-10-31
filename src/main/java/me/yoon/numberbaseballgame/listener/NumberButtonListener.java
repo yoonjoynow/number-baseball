@@ -1,13 +1,18 @@
-package me.yoon.numberbaseballgame;
+package me.yoon.numberbaseballgame.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+public class NumberButtonListener extends GameButtonListener {
 
-public class ButtonListener implements ActionListener {
+    private static NumberButtonListener listener;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private NumberButtonListener() {
 
     }
-    
+
+    public static NumberButtonListener getListener() {
+        if (listener == null) {
+            listener = new NumberButtonListener();
+        }
+
+        return listener;
+    }
 }

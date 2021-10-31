@@ -1,6 +1,4 @@
-package me.yoon.numberbaseballgame;
-
-import javafx.event.ActionEvent;
+package me.yoon.numberbaseballgame.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class Computer extends Player {
 
     @Override
     protected void pickHiddenNumbers() {
-        while (this.hiddenNumbers.size() < this.MAX_SIZE) {
+        while (this.hiddenNumbers.size() < MAX_SIZE) {
             int newNumber = createRandomNumber();
             if (this.hiddenNumbers.contains(newNumber)) {
                 continue;
@@ -37,6 +35,13 @@ public class Computer extends Player {
 
     @Override
     protected List<Integer> attack() {
+        // 컴퓨터가 계산하는 시간 여유분 주기
+        try {
+            Thread.sleep(createRandomNumber() * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         List<Integer> attackNumbers = pickAttackNumbers();
         System.out.println("컴퓨터의 공격 숫자 : " + attackNumbers.toString());
         return attackNumbers;
@@ -44,10 +49,10 @@ public class Computer extends Player {
 
     public void excludeOutNumbers(List<Integer> outNumbers) {
         for (int outNumber : outNumbers) {
-            // 아웃 넘버들은 다음 추론에서 제외
+            // 아웃된 넘버들은 다음 추론에서 제외
             this.expectedNumbers.remove((Object) outNumber);
         }
-        System.out.println("추론 목록 : " + expectedNumbers.toString());
+        System.out.println("컴퓨터의 추론 범위 : " + expectedNumbers.toString());
     }
 
     @Override
@@ -59,17 +64,16 @@ public class Computer extends Player {
          *    4. attackNumbers의 size가 4일 때까지 반복
          *    5. attackNumbers 리턴
          */
-
-        List<Integer> attackNumbers = new ArrayList<>(4);
-        while (attackNumbers.size() < this.MAX_SIZE) {
+        List<Integer> attackNumbers = new ArrayList<>(MAX_SIZE);
+        while (attackNumbers.size() < MAX_SIZE) {
             int randomNumber = createRandomNumber();
-            pickNumber(attackNumbers, randomNumber);
+            addNumber(attackNumbers, randomNumber);
         }
 
         return attackNumbers;
     }
 
-    private void pickNumber(List<Integer> attackNumbers, int randomNumber) {
+    private void addNumber(List<Integer> attackNumbers, int randomNumber) {
         if (expectedNumbers.contains(randomNumber) &&
             ! attackNumbers.contains(randomNumber)) {
             attackNumbers.add(randomNumber);
